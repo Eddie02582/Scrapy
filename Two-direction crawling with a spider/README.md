@@ -1,8 +1,5 @@
 # Scrapy
 
-
-
-
 ## 安裝
 首先 pip install scrapy </br>
 如果出現vc++錯誤,可到<a href="https://www.lfd.uci.edu/~gohlke/pythonlibs/#twisted ">Unofficial Windows Binaries for Python Extension Packages </a> 抓取對應的twisted 安裝</br>
@@ -103,6 +100,71 @@ class QuotesSpider(scrapy.Spider):
 ```
 scrapy crawl example -o quotes.json
 ```
+
+## Following links
+介紹如何連續取每一頁
+找到網頁最下面next
+
+```html
+<ul class="pager">
+    <li class="next">
+        <a href="/page/2/">Next <span aria-hidden="true">&rarr;</span></a>
+    </li>
+</ul>
+```
+透過css/xpath取得href
+```
+>>> response.css('li.next a::attr(href)').extract_first()
+'/page/2/'
+
+>>> response.xpath('//li[contains(@class, "next")]//a/@href').extract_first()
+'/page/2/'
+```
+
+因為這網頁只有一個li,所以xpath 可以簡化
+```
+>>> response.xpath('//li//a/@href').extract_first()
+'/page/2/'
+```
+
+spider.py
+```
+class QuotesSpider(scrapy.Spider):
+    name = "quotes"
+    # allowed_domains = ['example.com']
+    start_urls = [
+        'http://quotes.toscrape.com/page/1/',
+        
+    ]   
+
+
+    def parse(self, response):   
+        
+        for quote in response.css("div.quote"):  
+            yield {
+                'text' : quote.css("span.text::text").extract_first(),
+                'author' : quote.css("small.author::text").extract_first(),
+                'tags' : quote.css("div.tags a.tag::text").extract(),
+            
+            }
+            
+            next_page = response.css('li.next a::attr(href)').extract_first()
+
+        if next_page is not None:
+            next_page = response.urljoin(next_page)
+            yield scrapy.Request(next_page, callback=self.parse)
+```
+
+使用response.follow ,主要差異在於response.follow 支持相對路徑
+
+```
+    def parse(self, response):   
+        .....
+        if next_page is not None:
+            yield response.follow(next_page, callback=self.parse)            
+```
+
+
 
 
 
