@@ -32,7 +32,7 @@
 
 
 
-```
+```python 
 class QuotesSpider(scrapy.Spider):
     name = "quotes"
     # allowed_domains = ['example.com']
@@ -66,14 +66,14 @@ response.urljoin(),會將網址轉成絕對路徑　<br>
 
 使用response.follow取代scrapy.Request,response.follow 支持相對路徑,可以省略response.urljoin這行
 
-```
+```python 
     def parse(self, response):   
         .....
         if next_page is not None:
             yield response.follow(next_page, callback=self.parse)            
 ```
 也可以支援傳入selector
-```
+```python 
     def parse(self, response):  
         for quote in response.css("div.quote"):  
             yield {
@@ -91,20 +91,21 @@ response.urljoin(),會將網址轉成絕對路徑　<br>
 
 
 對於<a>元素，有一個快捷方式：response.follow自動使用其href屬性。 因此，代碼可以進一步縮短：
-```
+
+```python 
 for a in response.css('ul.pager a'):
     yield response.follow(a, callback=self.parse)
 ```
 
 對於multiple requests可以使用response.follow_all
 
-```
+```python 
 anchors = response.css('ul.pager a')
 yield from response.follow_all(anchors, callback=self.parse)
 ```
 
 或者
-```
+```python 
 yield from response.follow_all(css='ul.pager a', callback=self.parse)
 ```
 
