@@ -46,29 +46,6 @@ example/spiders 在建立spider.py內容如下
     <li>parse(response):解析網址(會對每個start_url 執行parse)</li>
 </ul>
 
-這個範例為簡單把網頁的body存在本地
-
-```
-class QuotesSpider(scrapy.Spider):
-    name = "quotes"
-    allowed_domains = ['example.com']
-    start_urls = [
-        'http://quotes.toscrape.com/page/1/',
-        'http://quotes.toscrape.com/page/2/',     
-    ] 
-
-    def parse(self, response):
-        page = response.url.split("/")[-2]
-        filename = 'quotes-%s.html' % page
-        with open(filename, 'wb') as f:
-            f.write(response.body)
-        self.log('Saved file %s' % filename)
-
-
-```
-## Extracting data
-
-
 ```
 class QuotesSpider(scrapy.Spider):
     name = "quotes"
@@ -84,6 +61,8 @@ class QuotesSpider(scrapy.Spider):
             author = quote.css("small.author::text").extract_first()
             tags = quote.css("div.tags a.tag::text").extract()
             print(dict(text=text, author=author, tags=tags))
+
+
 ```
 
 ## Import data as .json
@@ -104,6 +83,14 @@ class QuotesSpider(scrapy.Spider):
 scrapy crawl example -o quotes.json
 ```
 
+按照以下順序閱讀
+
+<ul>
+    <li>Extracting data</li>
+    <li>Following links</li>
+    <li>Pipelines</li>
+    <li>Two-direction crawling with a spider</li>
+</ul>
 
 
 
