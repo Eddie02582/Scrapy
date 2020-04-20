@@ -32,7 +32,7 @@ class Two_direction_QuotesSpider(scrapy.Spider):
         }
 ```
 parse　可以寫成這種方式
-```
+```python
     def parse(self, response):
         author_page_links = response.css('.author + a')
         yield from response.follow_all(author_page_links, self.parse_author)
