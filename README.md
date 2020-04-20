@@ -46,7 +46,7 @@ example/spiders 在建立spider.py內容如下
     <li>parse(response):解析網址(會對每個start_url 執行parse)</li>
 </ul>
 
-```
+```python 
 class QuotesSpider(scrapy.Spider):
     name = "quotes"
     allowed_domains = ['example.com']
@@ -68,7 +68,8 @@ class QuotesSpider(scrapy.Spider):
 ## Import data as .json
 
 使用yield疊代儲存數據
-```
+
+```python 
     def parse(self, response):   
         for quote in response.css("div.quote"):
             yield {
