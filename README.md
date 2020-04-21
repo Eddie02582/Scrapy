@@ -32,3 +32,47 @@ example/
         spiders/          # a directory where you'll later put your spiders
             __init__.py
 ```            
+
+簡單的爬蟲
+
+```
+import scrapy
+from example.items import QuotesItem
+
+class QuotesSpider(scrapy.Spider):
+    name = "quotes"   
+    start_urls = [
+        'http://quotes.toscrape.com/page/1/',
+        'http://quotes.toscrape.com/page/2/',        
+    ]   
+
+
+    def parse(self, response):  
+        for quote in response.css("div.quote"):  
+            yield {
+                text:quote.css("span.text::text").get()
+                author:quote.css("small.author::text").get()
+                tags:quote.css("div.tags a.tag::text").extract()  
+            
+            }
+     
+ ```
+ 
+ start_urls: starts url array<br>
+ parse : 解析網頁資料<br>
+ 
+ cmd 執行
+ ```
+    scrapy crawl quotes -o 123.csv 
+ ```
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
