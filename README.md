@@ -33,11 +33,11 @@ example/
             __init__.py
 ```            
 
-簡單的爬蟲
+## 簡單的爬蟲
 
 
 start_urls: starts url array<br>
-parse : 解析網頁資料<br>
+parse: 解析網頁資料<br>
 name :cmd 執行爬蟲的名字
  
 ```python 
@@ -68,6 +68,24 @@ class QuotesSpider(scrapy.Spider):
  ```
     scrapy crawl quotes -o 123.csv 
  ```
+ 
+ ## Start Learning
+ 
+ <ul>
+    <li><a href = "https://github.com/Eddie02582/Scrapy/tree/master/Extracting%20data">Extracting data</a><li>
+    <li><a href = "https://github.com/Eddie02582/Scrapy/tree/master/Items">Items</a><li>
+    <li><a href = "https://github.com/Eddie02582/Scrapy/tree/master/Pipelines">Pipelines</a><li>
+    <li><a href = "https://github.com/Eddie02582/Scrapy/tree/master/Following%20links">Following links</a><li>
+    <li><a href = "https://github.com/Eddie02582/Scrapy/tree/master/Two-direction%20Crawling">Two-direction Crawling</a><li>
+    <li><a href = "https://github.com/Eddie02582/Scrapy/tree/master/PTT%20Spider">Crawl PTT</a><li>
+</ul>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  
  
  
