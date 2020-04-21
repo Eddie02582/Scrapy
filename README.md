@@ -35,7 +35,12 @@ example/
 
 簡單的爬蟲
 
-```
+
+start_urls: starts url array<br>
+parse : 解析網頁資料<br>
+name :cmd 執行爬蟲的名字
+ 
+```python 
 import scrapy
 from example.items import QuotesItem
 
@@ -58,9 +63,7 @@ class QuotesSpider(scrapy.Spider):
      
  ```
  
- start_urls: starts url array<br>
- parse : 解析網頁資料<br>
- 
+
  cmd 執行
  ```
     scrapy crawl quotes -o 123.csv 
