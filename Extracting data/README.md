@@ -141,7 +141,7 @@ response.xpath('//div[contains(@class, "quote")]/span[contains(@class, "text")]'
 ### example
 
 get page all data
-```
+```python
 >>> for quote in response.css("div.quote"):
 ...     text = quote.css("span.text::text").extract_first()
 ...     author = quote.css("small.author::text").extract_first()
