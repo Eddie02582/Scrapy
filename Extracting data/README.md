@@ -1,10 +1,11 @@
 # Extracting data
 
 The best way to learn how to extract data with Scrapy is trying selectors using the shell Scrapy shell. Run:
+```
 scrapy shell "http://quotes.toscrape.com/page/1/"
+```
 
-
-
+擷取第一篇文章的片段
 ```html
 <div class="quote">
     <span class="text">“The world as we have created it is a process of our
@@ -76,7 +77,7 @@ response.css('div.quote span.text')
 ```
 
 
-###example
+### example
 
 get page all data
 ```
@@ -137,7 +138,7 @@ response.xpath('//div[contains(@class, "quote")]/span[contains(@class, "text")]'
 
 
 
-###example
+### example
 
 get page all data
 ```
