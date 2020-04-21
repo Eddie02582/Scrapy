@@ -5,7 +5,8 @@
 
 ## 抓取page pre
 <img src = "1.PNG"></img>
-```
+
+```html
 <div class="btn-group btn-group-paging">
 	<a class="btn wide" href="/bbs/Beauty/index1.html">最舊</a>
 	<a class="btn wide" href="/bbs/Beauty/index3272.html">‹ 上頁</a>
@@ -15,15 +16,13 @@
 ```
 
 以css為例
-```
+```python
 >>> response.css('a.wide').extract()[1]
 '<a class="btn wide" href="/bbs/Baseball/index10010.html">‹ 上頁</a>'
 ```
 ## data link
 
-<img src = "2.PNG"></img>
-```
-
+```html
 <div class="r-ent">
 	...
 		<div class="title">			
@@ -33,21 +32,23 @@
 </div>
 ```
 
-```
+```python
 response.css('div.title a')
 ```
 
 ## extract data 
+<img src = "2.PNG"></img>
 以這篇為例https://www.ptt.cc/bbs/Baseball/M.1587361494.A.196.html
 
 
 假設我們想抓標題,日期,作者,內容,圖像
 這邊分別可以得到,標題,日期,作者
-```
+```python
 >>> response.css("span.article-meta-value::text").extract()
 ['Timekeeper (fine)', 'Baseball', '[討論] 被攻佔滿壘時給投手喘息的方法哪個最好', 'Mon Apr 20 13:44:52 2020']
-```        
-```
+```    
+    
+```python
 >>> response.css("#main-content::text").extract()
 ['\n棒球場上最緊張刺激的時刻之一\n就是被攻佔滿壘的時候\n對於進攻方而言是個一舉得分的絕佳機會\n對於防守方來說要守住滿壘的壓力肯定很大\n\n這時候常見有幾個方法給緊張的投手喘息的時間\n\n1.捕手走上投手丘講
 幾句話\n這個方法個人覺得不太好，因為通常不到30秒就會被主審打斷\n\n2.投手教練上丘講話\n常常看到投手教練上去安撫投手，緩和投手的壓力\n但這方法通常也不會超過1分鐘\n\n\n還有什麼方法是可以拖更長的時間\n讓
@@ -56,7 +57,7 @@ response.css('div.title a')
 ```
 
 ## code
-```
+```python
 class PTT_spider(scrapy.Spider):
     name = 'ptt'
     allowed_domains = ['ptt.cc']   
