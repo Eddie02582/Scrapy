@@ -93,8 +93,8 @@ class PTT_spider(scrapy.Spider):
 ```       
 
 ## How to get Imange with Beauty
-因為要存圖檔的關係,再pipelines.py 新增
-```
+pipelines.py 
+```python
 
 def create_folder(path):
     if not os.path.exists(path):
@@ -117,10 +117,6 @@ class DownLoad(ImagesPipeline):
             raise DropItem("Item contains no images")        
         return item	     
 
-```
-
-```
-scrapy crawl ptt -o 888.csv -a tag="Beauty"
 ```
 
  
