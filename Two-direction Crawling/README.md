@@ -13,13 +13,11 @@ class Two_direction_QuotesSpider(scrapy.Spider):
 
 
     def parse(self, response):
-        # follow links to author pages
-        for href in response.css('.author + a::attr(href)'):
-            yield response.follow(href, self.parse_author)
+        author_page_links = response.css('.author + a')
+        yield from response.follow_all(author_page_links, self.parse_author)
 
-        # follow pagination links
-        for href in response.css('li.next a::attr(href)'):
-            yield response.follow(href, self.parse)
+        pagination_links = response.css('li.next a')
+        yield from response.follow_all(pagination_links, self.parse)
 
     def parse_author(self, response):
         def extract_with_css(query):
@@ -31,15 +29,7 @@ class Two_direction_QuotesSpider(scrapy.Spider):
             'bio': extract_with_css('.author-description::text'),
         }
 ```
-parse　可以寫成這種方式
-```python
-    def parse(self, response):
-        author_page_links = response.css('.author + a')
-        yield from response.follow_all(author_page_links, self.parse_author)
-
-        pagination_links = response.css('li.next a')
-        yield from response.follow_all(pagination_links, self.parse)
-```        
+ 
 
 ## CrawlSpider
 
