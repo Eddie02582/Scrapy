@@ -77,6 +77,17 @@ response.css('div.quote span.text')
 ```
 
 
+
+### with Regular expressions
+```
+>>> response.css('title::text').re(r'Quotes.*')
+['Quotes to Scrape']
+>>> response.css('title::text').re(r'Q\w+')
+['Quotes']
+>>> response.css('title::text').re(r'(\w+) to (\w+)')
+['Quotes', 'Scrape']
+```
+
 ### example
 
 get page all data
@@ -102,6 +113,28 @@ king', 'world']}
 >>>
 ```
 
+### wrire in spider
+```
+import scrapy
+
+
+class QuotesSpider(scrapy.Spider):
+    name = "quotes"
+    start_urls = [
+        'http://quotes.toscrape.com/page/1/',
+        'http://quotes.toscrape.com/page/2/',
+    ]
+
+    def parse(self, response):
+        for quote in response.css('div.quote'):
+            yield {
+                'text': quote.css('span.text::text').get(),
+                'author': quote.css('small.author::text').get(),
+                'tags': quote.css('div.tags a.tag::text').getall(),
+            }
+```
+
+
 
 ## xpath
 
@@ -112,7 +145,7 @@ king', 'world']}
 /html/body/div/div[2]/div[1]/div[1]/span[1]
 
 ```python
->>> response.xpath('/html/body/div/div[2]/div[1]/div[1]/span[1]/text()')
+>>> response.xpath('/html/body/div/div[2]/div[1]/div[1]/span[1]')
 [<Selector xpath='/html/body/div/div[2]/div[1]/div[1]/span[1]' data='<span class="text" itemprop="text">“T...'>]
 ```
 
@@ -142,10 +175,10 @@ response.xpath('//div[contains(@class, "quote")]/span[contains(@class, "text")]'
 
 get page all data
 ```python
->>> for quote in response.css("div.quote"):
-...     text = quote.css("span.text::text").extract_first()
-...     author = quote.css("small.author::text").extract_first()
-...     tags = quote.css("div.tags a.tag::text").extract()
+>>> for quote in response.xpath("//div[contains(@class, 'quote')]"):
+...     text = quote.xpath('span[contains(@class, "text")]/text()').get()
+...     author = quote.xpath("span/small/text()").get()
+...     tags = quote.xpath("div[contains(@class, 'tags')]/a/@href").getall()
 ...     print(dict(text=text, author=author, tags=tags))
 ...
 {'text': '“The world as we have created it is a process of our thinking. It cannot be changed without changing our thinking.”', 'author': 'Albert Einstein', 'tags': ['change', 'deep-thoughts', 'thin

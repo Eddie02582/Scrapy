@@ -52,9 +52,9 @@ class QuotesSpider(scrapy.Spider):
             
             }
             
-            next_page = response.css('li.next a::attr(href)').extract_first()
+        next_page = response.css('li.next a::attr(href)').extract_first()
 
-        if next_page is not None:
+        if next_page:
             next_page = response.urljoin(next_page)
             yield scrapy.Request(next_page, callback = self.parse)
 ```
@@ -69,10 +69,12 @@ response.urljoin(),會將網址轉成絕對路徑　<br>
 ```python 
     def parse(self, response):   
         .....
-        if next_page is not None:
+        if next_page:
             yield response.follow(next_page, callback=self.parse)            
 ```
+
 也可以支援傳入selector
+
 ```python 
     def parse(self, response):  
         for quote in response.css("div.quote"):  
@@ -83,17 +85,17 @@ response.urljoin(),會將網址轉成絕對路徑　<br>
             
             }  
         
-        for href in response.css('ul.pager a::attr(href)'):
+        for href in response.css('li.next a::attr(href)'):
             yield response.follow(href, callback=self.parse)
 
 ```
 
 
 
-對於<a>元素，有一個快捷方式：response.follow自動使用其href屬性。 因此，代碼可以進一步縮短：
+對於<a>元素，有一個快捷方式：response.follow自動使用其href屬性。
 
 ```python 
-for a in response.css('ul.pager a'):
+for a in response.css('li.next a'):
     yield response.follow(a, callback=self.parse)
 ```
 
