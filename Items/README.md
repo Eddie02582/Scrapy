@@ -1,6 +1,5 @@
 # Items
-抓取的主要目的是從非結構化源（通常是網頁）中提取結構化數據。 Scrapy Spider可以將提取的數據作為Python字典返回。<br> 
-Python字典雖然方便且熟悉，但缺乏結構：很容易在字段名稱中輸入錯誤或返回不一致的數據，尤其是在具有許多蜘蛛的大型項目中。<br> 
+
 
 在item.py新增
 ```python 
@@ -11,6 +10,10 @@ class QuotesItem(scrapy.Item):
 ```
 spider.py如下
 
+注意使用yield Item 就不能使用下面指令,需要額外寫Pipelines輸出
+```
+scrapy crawl quotes -o qoutes.csv
+```
 
 ```python 
 import scrapy
@@ -32,7 +35,8 @@ class QuotesSpider(scrapy.Spider):
         next_page = response.css('li.next a::attr(href)').extract_first()   
         if next_page is not None:
             next_page = response.urljoin(next_page)
-            yield scrapy.Request(next_page, callback=self.parse)
-  
+            yield scrapy.Request(next_page, callback=self.parse)  
             
 ```
+
+0

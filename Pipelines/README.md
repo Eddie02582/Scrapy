@@ -3,7 +3,7 @@ pipelines 主要定義data export 格式
 
 ## CSV
 pipelines.py
-```
+```python
 import json
 
 class JsonWriterPipeline(object):
@@ -23,7 +23,7 @@ class JsonWriterPipeline(object):
 spider.py 使用方法
 新增 custom_settings = {'ITEM_PIPELINES': {'example.pipelines.CSV': 800,}}
 
-```
+```python
 class QuotesSpider(scrapy.Spider):
     name = "quotes"
     max_pages = 3
