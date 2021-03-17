@@ -1,55 +1,74 @@
-# -*- coding: utf-8 -*-
-
 # Define your item pipelines here
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
-# See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
+# See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 
 
+# useful for handling different item types with a single interface
+from itemadapter import ItemAdapter
+import json
 
 import os
 from scrapy.pipelines.images import ImagesPipeline
 from scrapy.exceptions import DropItem
-import urllib
+import urllib.request
 import codecs 
 
-class ExamplePipeline(object):
+class ExamplePipeline:
     def process_item(self, item, spider):
         return item
 
+
+class JsonWriterPipeline(object):
+    def open_spider(self, spider):
+        self.file = open('quotes.item', 'w')
+
+    def close_spider(self, spider):
+        self.file.close()
+
+    def process_item(self, item, spider):
+        #line = json.dumps(dict(item)) + "\n"
+        line = json.dumps(ItemAdapter(item).asdict()) + "\n"
+        self.file.write(line)
+        return item
+        
+        
 def create_folder(path):
     if not os.path.exists(path):
         os.makedirs(path)
-        
+
+def get_filename(path):
+    return path.split('/')[-1]
+
 
 class DownLoad(ImagesPipeline):
-    # def __init__(self):  
-        # self.file = codecs.open('news.json', 'wb', encoding='utf-8')  
-        
     def get_media_requests(self, item, info):
-        #if item['img_urls']:
-        Count = 1
-        save_path = "D:\\crawl\\{0}\\'{1}'".format(item['board'],item['title']) 
+        save_path = "D:\\crawl\\{0}\\{1}\\".format(item['board'],item['title']) 
         create_folder(save_path)        
 
-        file = codecs.open('beauty.json', 'wa', encoding='utf-8')  
-        line = json.dumps(dict(item)) + '\n'         
-        file.write(line.decode("unicode_escape"))   
-        
         for image_url in item['image_urls']:	
-            urllib.request.urlretrieve(image_url,save_path + '\\%s.jpg' %Count)
-            Count+=1
+            urllib.request.urlretrieve(image_url,save_path + get_filename(image_url))
+            
         
     def item_completed(self, results, item, info):
         image_paths = [x['path'] for ok, x in results if ok]    
         if not image_paths:
-            raise DropItem("Item contains no images")       
-        #item['image_paths'] = image_paths   
-
-        return item	  
+            raise DropItem("Item contains no images")        
+        return item	     
         
         
 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
