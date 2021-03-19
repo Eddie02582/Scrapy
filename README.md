@@ -57,10 +57,12 @@ class QuotesSpider(scrapy.Spider):
 ```
    scrapy shell url
 ```
-這邊以http://quotes.toscrape.com/page/1/舉例在cmd 下scrapy shell http://quotes.toscrape.com/page/1/
+這邊以http://quotes.toscrape.com/page/1/為例<br>
+
+在cmd 下scrapy shell http://quotes.toscrape.com/page/1/
 
 
-可以從網頁原始碼觀察,每個block 都被<div class="quote">包住,所以鎖定這個區域
+可以從網頁原始碼觀察,每個block 都被div class="quote"包住,所以鎖定這個區域
 ```
 <div class="quote">
     <span class="text">“The world as we have created it is a process of our
