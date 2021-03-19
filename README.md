@@ -2,14 +2,11 @@
 
 ## 安裝
 首先 pip install scrapy </br>
-如果出現vc++錯誤,可到<a href="https://www.lfd.uci.edu/~gohlke/pythonlibs/#twisted ">Unofficial Windows Binaries for Python Extension Packages </a> 抓取對應的twisted 安裝</br>
-接著再 pip install scrapy </br>
-
 
 ## 建立案子
 指令為
 ```
-    scrapy startproject [name]
+   scrapy startproject [name]
 ```
  
 在cmd下   scrapy startproject example 會產生
@@ -33,16 +30,15 @@ example/
             __init__.py
 ```            
 
-## 簡單的爬蟲
+## 爬蟲的格式
 
 
-start_urls: starts url array<br>
+start_urls: 要爬蟲的網址<br>
 parse: 解析網頁資料<br>
 name :cmd 執行爬蟲的名字
  
 ```python 
 import scrapy
-
 
 class QuotesSpider(scrapy.Spider):
     name = "quotes"
@@ -52,15 +48,63 @@ class QuotesSpider(scrapy.Spider):
     ]
 
     def parse(self, response):
-        for quote in response.css('div.quote'):
-            yield {
-                'text': quote.css('span.text::text').get(),
-                'author': quote.css('small.author::text').get(),
-                'tags': quote.css('div.tags a.tag::text').getall(),
-            }
-     
+        pass
  ```
- 
+
+
+## How to extract data
+使用scrapy shell 來學習或測試,指令為
+```
+   scrapy shell url
+```
+這邊以http://quotes.toscrape.com/page/1/舉例在cmd 下scrapy shell http://quotes.toscrape.com/page/1/
+
+
+可以從網頁原始碼觀察,每個block 都被<div class="quote">包住,所以鎖定這個區域
+```
+<div class="quote">
+    <span class="text">“The world as we have created it is a process of our
+    thinking. It cannot be changed without changing our thinking.”</span>
+    <span>
+        by <small class="author">Albert Einstein</small>
+        <a href="/author/Albert-Einstein">(about)</a>
+    </span>
+    <div class="tags">
+        Tags:
+        <a class="tag" href="/tag/change/page/1/">change</a>
+        <a class="tag" href="/tag/deep-thoughts/page/1/">deep-thoughts</a>
+        <a class="tag" href="/tag/thinking/page/1/">thinking</a>
+        <a class="tag" href="/tag/world/page/1/">world</a>
+    </div>
+</div>
+```
+主要可以使用css 或是xpath 來select element
+
+
+### css selector 
+
+#### get tag elements 
+
+
+
+取得div class = "quote" 底下所有span class = "text"
+```python
+response.css('div.quote span.text')
+>>>[<Selector xpath="descendant-or-self::div[@class and contains(concat(' ', normalize-space(@class), ' '), ' quote ')]/...
+```
+
+#### get list string (extract /getall)
+```python
+>>> response.css('div.quote span.text').getall()
+['<span class="text" itemprop="text">“The world as we have created it is a process of our thinking. It cannot be changed without changing our thinking.”</span>', 
+ '<span class="text" itemprop="text".....>
+]
+```
+
+
+
+
+
 
  cmd 執行
  ```
