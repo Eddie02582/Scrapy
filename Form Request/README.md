@@ -7,16 +7,11 @@
 ```python 
 import scrapy
 class  QuotesLoginSpider(scrapy.Spider):
-    name = "login"
-   
-    start_urls = [
-        'http://quotes.toscrape.com/page/1/',        
-    ]
+    name = "login" 
     
     def start_requests(self):         
         url = 'http://quotes.toscrape.com/login'
         yield scrapy.FormRequest(url,formdata={'username':'1234','password':'777'},callback = self.check_login)
-        
     
     def parse(self, response):
         for quote in response.css('div.quote'):
