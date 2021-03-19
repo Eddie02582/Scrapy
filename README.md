@@ -10,6 +10,7 @@
     <li><a href = "https://github.com/Eddie02582/Scrapy/tree/master/Items">Items</a></li>    
     <li><a href = "https://github.com/Eddie02582/Scrapy/tree/master/Pipelines">Pipelines</a></li>
     <li><a href = "https://github.com/Eddie02582/Scrapy/tree/master/Two-direction%20Crawling">Two-direction Crawling</a></li>
+    <li><a href = "https://github.com/Eddie02582/Scrapy/tree/master/Form%20Request">Form Request</a></li>
     <li><a href = "https://github.com/Eddie02582/Scrapy/tree/master/PTT%20Spider">Crawl PTT</a></li>
 </ul>
  

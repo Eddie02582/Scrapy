@@ -1,6 +1,7 @@
 # Form Request
 
-透過form request 傳送,formdata傳送資料,key 為element name
+
+介紹透過form request登入網頁,formdata為傳送資料,key 為element name
 
 
 ```python 
