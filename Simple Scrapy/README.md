@@ -124,7 +124,7 @@ king', 'world']}
 ```
 
 ## 代碼
-```
+```python
 class QuotesSpider(scrapy.Spider):
     name = "quotes"
     start_urls = [
