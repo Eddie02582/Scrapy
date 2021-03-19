@@ -70,7 +70,7 @@ response.css('div.quote span.text')
 ```
 
 也可以使用下列方式
-```
+```python
 >>> quote = response.css("div.quote")[0]
 >>> quote.css("span.text::text").extract_first()
 '“The world as we have created it is a process of our thinking. It cannot be changed without changing our thinking.”'
@@ -79,7 +79,7 @@ response.css('div.quote span.text')
 
 
 ### with Regular expressions
-```
+```python
 >>> response.css('title::text').re(r'Quotes.*')
 ['Quotes to Scrape']
 >>> response.css('title::text').re(r'Q\w+')
@@ -91,7 +91,7 @@ response.css('div.quote span.text')
 ### example
 
 get page all data
-```
+```python
 >>> for quote in response.css("div.quote"):
 ...     text = quote.css("span.text::text").extract_first()
 ...     author = quote.css("small.author::text").extract_first()
@@ -114,9 +114,8 @@ king', 'world']}
 ```
 
 ### wrire in spider
-```
+```python
 import scrapy
-
 
 class QuotesSpider(scrapy.Spider):
     name = "quotes"
