@@ -1,122 +1,90 @@
-# Following links
-介紹如何結取每個分頁,一樣以http://quotes.toscrape.com/page/1/為例
+# 爬取動態網頁
+使用Spalsh,Spalsh提供JavaScript渲染服務，它是一個使用Twisted和QT5在Python中實現的支持HTTP API調用的輕量級的web瀏覽器。
 
 
-## How to get data form following links
-首先是將鏈接提取到我們要關注的頁面。檢查我們的頁面，可以看到帶有以下標記的指向下一頁的鏈接：
+可以參考<a href = "https://splash-cn-doc.readthedocs.io/zh_CN/latest/scrapy-splash-toturial.html">官方文檔</a>
 
-```html
-<ul class="pager">
-    <li class="next">
-        <a href="/page/2/">Next <span aria-hidden="true">&rarr;</span></a>
-    </li>
-</ul>
+## install
+```
+   pip install scrapy-splash
+```
+## 配置
+使用docker 配置比較簡單
+
+### Pull Image
+```
+   docker pull scrapinghub/splash
 ```
 
-使用css取得next page link
-```python
->>> response.css('li.next a::attr(href)').get()
-'/page/2/'
+### Run
+```
+   docker run -p 8050:8050 scrapinghub/splash
 ```
 
-也可以使用attrib 屬性取得
-```python
->>> response.css('li.next a').attrib['href']
-'/page/2/
+##修改scrapy setting.py設定
+
+配置Splash服務的地址
+```
+SPLASH_URL = 'http://127.0.0.1:8050'
 ```
 
-
-
-使用yield scrapy.Request(absolute_url, callback = self.parse)
-可以將網址在傳入parse() 再執行
-
-
+DOWNLOADER_MIDDLEWARES 加上splash的中間件，並設置 HttpCompressionMiddleware 對象的優先級
 
 ```python 
-class QuotesSpider(scrapy.Spider):
-    name = "quotes"
-    # allowed_domains = ['example.com']
-    start_urls = [
-        'http://quotes.toscrape.com/page/1/',
-        
-    ]   
+DOWNLOADER_MIDDLEWARES = {
+    'scrapy_splash.SplashCookiesMiddleware': 723,
+    'scrapy_splash.SplashMiddleware': 725,
+    'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,
+}
+```
+
+設定
+```python
+SPIDER_MIDDLEWARES = {
+    'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,
+}
+```
+
+設定DUPEFILTER_CLASS
+```python
+DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
+```
+
+您可以设置scrapy.contrib.httpcache.FilesystemCacheStorage 来使用Splash的HTTP缓存
+```python
+HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
+```
 
 
-    def parse(self, response):   
-        
-        for quote in response.css("div.quote"):  
+
+## code
+只要用SplashRequest取代scrapy.Request
+```
+import scrapy
+from scrapy_splash import SplashRequest
+class QuotesJsSpider(scrapy.Spider):
+    name = "quotesjs"   
+
+    def start_requests(self):     
+        url = 'http://quotes.toscrape.com/js/'
+        yield SplashRequest(url, self.parse, args={'wait': 0.5})
+                
+    
+    def parse(self, response):        
+        print (response.text)
+        for quote in response.css('div.quote'):
             yield {
-                'text' : quote.css("span.text::text").extract_first(),
-                'author' : quote.css("small.author::text").extract_first(),
-                'tags' : quote.css("div.tags a.tag::text").extract(),
-            
+                'text': quote.css('span.text::text').get(),
+                'author': quote.css('small.author::text').get(),
+                'tags': quote.css('div.tags a.tag::text').getall(),
             }
-            
-        next_page = response.css('li.next a::attr(href)').extract_first()
 
+        next_page = response.css('li.next a::attr(href)').extract_first()
         if next_page:
             next_page = response.urljoin(next_page)
-            yield scrapy.Request(next_page, callback = self.parse)
-```
-
-response.urljoin(),會將網址轉成絕對路徑　<br>
-
-
-## A shortcut for creating Requests
-
-使用response.follow取代scrapy.Request,response.follow 支持相對路徑,可以省略response.urljoin這行
-
-```python 
-    def parse(self, response):   
-        .....
-        if next_page:
-            yield response.follow(next_page, callback=self.parse)            
-```
-
-也可以支援傳入selector
-
-```python 
-    def parse(self, response):  
-        for quote in response.css("div.quote"):  
-            yield {
-                'text' : quote.css("span.text::text").extract_first(),
-                'author' : quote.css("small.author::text").extract_first(),
-                'tags' : quote.css("div.tags a.tag::text").extract(),
-            
-            }  
-        
-        for href in response.css('li.next a::attr(href)'):
-            yield response.follow(href, callback=self.parse)
+            yield SplashRequest(next_page, callback = self.parse)
 
 ```
-
-
-
-對於<a>元素，有一個快捷方式：response.follow自動使用其href屬性。
-
-```python 
-for a in response.css('li.next a'):
-    yield response.follow(a, callback=self.parse)
-```
-
-對於multiple requests可以使用response.follow_all
-
-```python 
-anchors = response.css('ul.pager a')
-yield from response.follow_all(anchors, callback=self.parse)
-```
-
-或者
-```python 
-yield from response.follow_all(css='ul.pager a', callback=self.parse)
-```
-
-
-
-
-
-
-
 
 
 
