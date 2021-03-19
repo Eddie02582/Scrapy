@@ -59,11 +59,10 @@ class QuotesSpider(scrapy.Spider):
 ```
 這邊以http://quotes.toscrape.com/page/1/為例<br>
 
-在cmd 下scrapy shell http://quotes.toscrape.com/page/1/
 
 
-可以從網頁原始碼觀察,每個block 都被div class="quote"包住,所以鎖定這個區域
-```
+可以從網頁原始碼觀察,每個block 都被div class="quote"包住
+```html
 <div class="quote">
     <span class="text">“The world as we have created it is a process of our
     thinking. It cannot be changed without changing our thinking.”</span>
