@@ -80,15 +80,8 @@ class  QuotesLoginSpider(scrapy.Spider):
     def login(self, response):
         return scrapy.FormRequest.from_response(
             response,
-            formdata={"username": "1234", "password": "777"}
+            formdata={"username": "1234", "password": "777"},            
         )
-
-    def check_login(self,response):
-        if 'Logout' in response.text:
-            print ('login sucess')
-            yield scrapy.Request(response.url,callback = self.parse)
-        else:
-            print ('login fail')
     
     def parse(self, response):
         for quote in response.css('div.quote'):
@@ -98,29 +91,6 @@ class  QuotesLoginSpider(scrapy.Spider):
                 'tags': quote.css('div.tags a.tag::text').getall(),
             }
 
-
-from scrapy_splash import SplashRequest
-class QuotesJsSpider(scrapy.Spider):
-    name = "quotesjs"   
-
-    def start_requests(self):     
-        url = 'http://quotes.toscrape.com/js/'
-        yield SplashRequest(url, self.parse, args={'wait': 0.5})
-                
-    
-    def parse(self, response):        
-        print (response.text)
-        for quote in response.css('div.quote'):
-            yield {
-                'text': quote.css('span.text::text').get(),
-                'author': quote.css('small.author::text').get(),
-                'tags': quote.css('div.tags a.tag::text').getall(),
-            }
-
-        next_page = response.css('li.next a::attr(href)').extract_first()
-        if next_page:
-            next_page = response.urljoin(next_page)
-            yield SplashRequest(next_page, callback = self.parse)
   
             
 class AuthorSpider(scrapy.Spider):

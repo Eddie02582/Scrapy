@@ -22,7 +22,4 @@ class PttItem(Item):
     title = Field()
     date_time = Field()    
     content = Field()
-
     image_urls = Field()
-    images = Field()
-    image_paths = Field()

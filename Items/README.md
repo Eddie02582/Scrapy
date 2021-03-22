@@ -1,6 +1,6 @@
 # Items
 
-```
+```python
 import scrapy
 
 class QuotesSpider(scrapy.Spider):

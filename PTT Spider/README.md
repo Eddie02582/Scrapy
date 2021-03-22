@@ -97,79 +97,24 @@ get image url
 ```
 
 ### DownLoad Image
-在setting.py 設定 IMAGES_STORE = 'images'
+在setting.py 
+ITEM_PIPELINES = {'scrapy.pipelines.images.ImagesPipeline': 1}
+IMAGES_STORE = 'images'
 
-pipelines.py 
-```python
-from scrapy.pipelines.images import ImagesPipeline
-from scrapy.exceptions import DropItem
-import urllib.request
+即可下載圖片,如果需要自訂資料夾和名字可以在pipelines撰寫,參考pipelines文章
 
-def create_folder(path):
-    if not os.path.exists(path):
-        os.makedirs(path)
-
-def get_filename(path):
-    return path.split('/')[-1]
-
-
-class DownLoad(ImagesPipeline):
-    def get_media_requests(self, item, info):
-        save_path = "D:\\crawl\\{0}\\{1}\\".format(item['board'],item['title']) 
-        create_folder(save_path)        
-
-        for image_url in item['image_urls']:	
-            urllib.request.urlretrieve(image_url,save_path + get_filename(image_url))
-            
-        
-    def item_completed(self, results, item, info):
-        image_paths = [x['path'] for ok, x in results if ok]    
-        if not image_paths:
-            raise DropItem("Item contains no images")        
-        return item	   
-
-```
 
 ### spider
-把上面測試的一一寫入
-#### CrawlSpider
-
-```python
-import scrapy
-from scrapy.spiders import CrawlSpider,Rule
-from scrapy.linkextractors import LinkExtractor
-
-class BeautyCrawlSpider(CrawlSpider):
-    name = 'ptt_beauty'
-    allowed_domains = ['ptt.cc']      
-    custom_settings = {'ITEM_PIPELINES': {'example.pipelines.DownLoad': 800,}}    
-    def start_requests(self):       
-        url = 'https://www.ptt.cc/bbs/Beauty/index.html' 
-        yield scrapy.Request(url, cookies ={'over18': '1'})    
-       
-    rules = ( 
-        Rule(LinkExtractor(restrict_css ='a.wide ')),
-        Rule(LinkExtractor(restrict_css='div.title a',restrict_text = r'\[正妹\].*'), callback ='parse_beauty'),
-    )  
-    
-    def parse_beauty(self, response):          
-        author,board,title,date_time = response.css("span.article-meta-value::text").extract()    
-        image_urls = response.xpath('//div[contains(@class,"bbs-screen")]//a[contains(@href, ".jpg")]/@href').extract()
-        yield {  
-            'board':board,
-            'title': title,    
-            'link': response.url,
-            'image_urls':image_urls
-        }
-```
 
 #### Spider
 
+使用ITEM_PIPELINES = {'scrapy.pipelines.images.ImagesPipeline': 1}需要使用Items寫法
+
 ```python
-class BeautySpider(scrapy.Spider):
-    name = 'beauty'
+from example.items import PttItem
+class BeautySpiderItem(scrapy.Spider):
+    name = 'beauty_item'
     allowed_domains = ['ptt.cc']  
-    custom_settings = {'ITEM_PIPELINES': {'example.pipelines.DownLoad': 800,}}    
     page = 0
     max_page = 2 
     
@@ -191,18 +136,53 @@ class BeautySpider(scrapy.Spider):
     def parse_article(self, response):        
         author,board,title,date_time = response.css("span.article-meta-value::text").extract()        
         content = response.css("#main-content::text").extract()
-        img_urls = response.xpath('//div[contains(@class,"bbs-screen")]//a[contains(@href, ".jpg")]/@href').extract()
-            
-        item = {
-            'board':board,
-            'author': author,
-            'title': title,
-            'date_time': date_time,
-            'content':content,
-            'image_urls':img_urls,
-        }
-        yield item   
+        image_urls = response.xpath('//div[contains(@class,"bbs-screen")]//a[contains(@href, ".jpg")]/@href').extract()
+        
+        item = PttItem()        
+        item['board'] = board
+        item['author'] = author
+        item['title'] = title
+        item['date_time'] = date_time
+        item['content'] = content
+        item['image_urls'] = image_urls
+       
+        yield item    
 ```       
+
+
+#### CrawlSpider
+
+使用自訂的就不需要寫items
+```python
+import scrapy
+from scrapy.spiders import CrawlSpider,Rule
+from scrapy.linkextractors import LinkExtractor
+
+class BeautyCrawlSpider(CrawlSpider):
+    name = 'ptt_beauty'
+    allowed_domains = ['ptt.cc']      
+    custom_settings = {'ITEM_PIPELINES': {'example.pipelines.PttImageDownLoad': 800,}}        
+    def start_requests(self):       
+        url = 'https://www.ptt.cc/bbs/Beauty/index.html' 
+        yield scrapy.Request(url, cookies ={'over18': '1'})    
+       
+    rules = ( 
+        Rule(LinkExtractor(restrict_css ='a.wide ')),
+        Rule(LinkExtractor(restrict_css='div.title a',restrict_text = r'\[正妹\].*'), callback ='parse_beauty'),
+    )  
+    
+    def parse_beauty(self, response):          
+        author,board,title,date_time = response.css("span.article-meta-value::text").extract()    
+        image_urls = response.xpath('//div[contains(@class,"bbs-screen")]//a[contains(@href, ".jpg")]/@href').extract()
+        yield {  
+            'board':board,
+            'title': title,    
+            'link': response.url,
+            'image_urls':image_urls
+        }
+```
+
+
 
 
 

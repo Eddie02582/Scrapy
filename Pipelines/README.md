@@ -30,10 +30,8 @@ class QuotesSpider(scrapy.Spider):
     pages = 0
     custom_settings = {'ITEM_PIPELINES': {'example.JsonWriterPipeline.CSV': 800,}}  
     start_urls = [
-        'http://quotes.toscrape.com/page/1/',
-        
-    ]   
-
+        'http://quotes.toscrape.com/page/1/',        
+    ]  
 
     def parse(self, response):  
         for quote in response.css("div.quote"):  
@@ -54,10 +52,41 @@ class QuotesSpider(scrapy.Spider):
 ```
 
 
+## Downdload Image
 
 
+```
+def get_filename(path):
+    return path.split('/')[-1]
+       
 
+import scrapy
+class PttImageDownLoad(ImagesPipeline):
+    def get_media_requests(self, item, info):
+        for image_url in item['image_urls']:	          
+            yield scrapy.Request(
+              image_url,
+              meta={
+                'title': item['title'],
+                'board': item['board'],
+                'file_name': get_filename(image_url)
+              }
+            )
 
+    def item_completed(self, results, item, info):
+        image_paths = [x['path'] for ok, x in results if ok]
+        if not image_paths:
+            raise DropItem("Item contains no images")
+        return item
+
+    def file_path(self, request, response=None, info=None):
+        file_name = request.meta['file_name']
+        title = request.meta['title']
+        board = request.meta['board']
+        path = "D:\\crawl\\{0}\\{1}\\".format(board,title)
+        return path + file_name
+        
+```
 
 
 

@@ -11,14 +11,23 @@ BOT_NAME = 'example'
 
 SPIDER_MODULES = ['example.spiders']
 NEWSPIDER_MODULE = 'example.spiders'
+
+
+
+ITEM_PIPELINES = {'scrapy.pipelines.images.ImagesPipeline': 1}
 IMAGES_STORE = 'images'
 
+
+
+SPLASH_URL = 'http://localhost:8050'
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'example (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
 USER_AGENT = "Mozilla/5.0"
+
+
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -49,11 +58,23 @@ USER_AGENT = "Mozilla/5.0"
 #    'example.middlewares.ExampleSpiderMiddleware': 543,
 #}
 
+SPIDER_MIDDLEWARES = {
+    'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,
+}
+DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
+HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
 #    'example.middlewares.ExampleDownloaderMiddleware': 543,
 #}
+
+DOWNLOADER_MIDDLEWARES = {
+    'scrapy_splash.SplashCookiesMiddleware': 723,
+    'scrapy_splash.SplashMiddleware': 725,
+    'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,
+}
+
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html

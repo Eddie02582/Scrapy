@@ -31,37 +31,37 @@ class JsonWriterPipeline(object):
         line = json.dumps(ItemAdapter(item).asdict()) + "\n"
         self.file.write(line)
         return item
-        
-        
-def create_folder(path):
-    if not os.path.exists(path):
-        os.makedirs(path)
+      
 
 def get_filename(path):
     return path.split('/')[-1]
+       
 
-
-class DownLoad(ImagesPipeline):
+import scrapy
+class PttImageDownLoad(ImagesPipeline):
     def get_media_requests(self, item, info):
-        save_path = "D:\\crawl\\{0}\\{1}\\".format(item['board'],item['title']) 
-        create_folder(save_path)        
+        for image_url in item['image_urls']:	          
+            yield scrapy.Request(
+              image_url,
+              meta={
+                'title': item['title'],
+                'board': item['board'],
+                'file_name': get_filename(image_url)
+              }
+            )
 
-        for image_url in item['image_urls']:	
-            urllib.request.urlretrieve(image_url,save_path + get_filename(image_url))
-            
-        
     def item_completed(self, results, item, info):
-        image_paths = [x['path'] for ok, x in results if ok]    
+        image_paths = [x['path'] for ok, x in results if ok]
         if not image_paths:
-            raise DropItem("Item contains no images")        
-        return item	     
-        
-        
+            raise DropItem("Item contains no images")
+        return item
 
-        
-        
-        
-        
+    def file_path(self, request, response=None, info=None):
+        file_name = request.meta['file_name']
+        title = request.meta['title']
+        board = request.meta['board']
+        path = "D:\\crawl\\{0}\\{1}\\".format(board,title)
+        return path + file_name
         
         
         
