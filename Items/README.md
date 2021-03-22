@@ -1,5 +1,26 @@
 # Items
 
+```
+import scrapy
+
+class QuotesSpider(scrapy.Spider):
+    name = "quotes"
+    start_urls = [
+        'http://quotes.toscrape.com/page/1/',
+        'http://quotes.toscrape.com/page/2/',
+    ]
+
+    def parse(self, response):
+        for quote in response.css('div.quote'):
+            yield {
+                'text': quote.css('span.text::text').get(),
+                'author': quote.css('small.author::text').get(),
+                'tags': quote.css('div.tags a.tag::text').getall(),
+            }
+```
+
+## Items
+改用Items寫法
 
 在item.py新增
 ```python 
@@ -8,12 +29,8 @@ class QuotesItem(scrapy.Item):
 	author = Field()  
 	tags = Field() 
 ```
-spider.py如下
 
-注意使用yield Item 就不能使用下面指令,需要額外寫Pipelines輸出
-```
-scrapy crawl quotes -o qoutes.csv
-```
+spider.py
 
 ```python 
 import scrapy
@@ -39,4 +56,4 @@ class QuotesSpider(scrapy.Spider):
             
 ```
 
-0
+## Items Loader

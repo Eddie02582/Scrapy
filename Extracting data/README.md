@@ -164,7 +164,7 @@ response.xpath('//div[contains(@class, "quote")]/span[contains(@class, "text")]'
 >>> response.xpath('//div[contains(@class, "quote")]/span[contains(@class, "text")]/text()').extract_first()
 '“The world as we have created it is a process of our thinking. It cannot be changed without changing our thinking.”'
 
->>> response.xpath('//div[contains(@class, "tags")]/a/@href').extract_first()
+>>> response.xpath('//div[contains(@class, "tags")]/a/@href').get()
 '/tag/change/page/1/'
 ```
 
