@@ -95,6 +95,31 @@ get image url
 >>> response.css("div.richcontent blockquote a::attr(href)").extract()
 ['//imgur.com/jE9G3kv', '//imgur.com/nudo8tI', '//imgur.com/I5Tsl2H', '//imgur.com/yeTwTLl', '//imgur.com/5dLWpUe', '//imgur.com/NjsHGMQ', '//imgur.com/jZqQT4A']
 ```
+或者使用
+```python
+>>> response.xpath('//div[contains(@class,"bbs-screen")]//a[contains(@href, ".jpg")]/@href').extract()
+['https//i.imgur.com/jE9G3kv.jpg', 'https//i.imgur.com/nudo8tI.jpg', 'https//i.//imgur.com/I5Tsl2H.jpg',...
+```
+
+直接抓取jpg的話不用就轉換,後來發現並非所有都含有jpg,使用response.css("div.richcontent blockquote a::attr(href)").extract()比較保險
+所以在pipelines.py 新增轉換網址
+
+```
+def imgur_link_to_url(link):    
+    import re
+    match = re.match('^//imgur.com/([a-zA-Z0-9]+)',link)
+    if match:
+        return "https://i.imgur.com/" + match.group(1) + ".jpg"
+    else:
+        return link    
+
+class ImgurPipeline:
+    def process_item(self, item, spider):
+        if 'image_urls' in item:
+            item['image_urls'] = list(map(imgur_link_to_url, item['image_urls']))
+        return item
+```
+
 
 ### DownLoad Image
 在setting.py 
@@ -117,6 +142,7 @@ class BeautySpiderItem(scrapy.Spider):
     allowed_domains = ['ptt.cc']  
     page = 0
     max_page = 2 
+    custom_settings = {'ITEM_PIPELINES': {'example.pipelines.ImgurPipeline': 3}        
     
     def start_requests(self):  
         url = 'https://www.ptt.cc/bbs/Beauty/index.html' 
@@ -136,7 +162,8 @@ class BeautySpiderItem(scrapy.Spider):
     def parse_article(self, response):        
         author,board,title,date_time = response.css("span.article-meta-value::text").extract()        
         content = response.css("#main-content::text").extract()
-        image_urls = response.xpath('//div[contains(@class,"bbs-screen")]//a[contains(@href, ".jpg")]/@href').extract()
+        #image_urls = response.xpath('//div[contains(@class,"bbs-screen")]//a[contains(@href, ".jpg")]/@href').extract()
+        img_urls = response.css('div.richcontent blockquote.imgur-embed-pub a::attr(href)').extract()
         
         item = PttItem()        
         item['board'] = board

@@ -12,12 +12,11 @@ BOT_NAME = 'example'
 SPIDER_MODULES = ['example.spiders']
 NEWSPIDER_MODULE = 'example.spiders'
 
-
-
 ITEM_PIPELINES = {'scrapy.pipelines.images.ImagesPipeline': 1}
 IMAGES_STORE = 'images'
 
-
+EXTENSIONS = {'example.latencies.Latencies': 500}
+LATENCIES_INTERVAL = 5
 
 SPLASH_URL = 'http://localhost:8050'
 # Crawl responsibly by identifying yourself (and your website) on the user-agent

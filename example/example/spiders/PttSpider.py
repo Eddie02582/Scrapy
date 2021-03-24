@@ -30,7 +30,7 @@ class BeautyCrawlSpider(CrawlSpider):
 class BeautySpider(scrapy.Spider):
     name = 'beauty'
     allowed_domains = ['ptt.cc']  
-    custom_settings = {'ITEM_PIPELINES': {'example.pipelines.PttImageDownLoad': 800,}}        
+    custom_settings = {'ITEM_PIPELINES': {'example.pipelines.ImgurPipeline': 3,'example.pipelines.PttImageDownLoad': 800,}}        
     page = 0
     max_page = 2 
     
@@ -52,8 +52,9 @@ class BeautySpider(scrapy.Spider):
     def parse_article(self, response):        
         author,board,title,date_time = response.css("span.article-meta-value::text").extract()        
         content = response.css("#main-content::text").extract()
-        img_urls = response.xpath('//div[contains(@class,"bbs-screen")]//a[contains(@href, ".jpg")]/@href').extract()
-            
+        #img_urls = response.xpath('//div[contains(@class,"bbs-screen")]//a[contains(@href, ".jpg")]/@href').extract()   
+        img_urls = response.css('div.richcontent blockquote.imgur-embed-pub a::attr(href)').extract()
+        
         item = {
             'board':board,
             'author': author,
