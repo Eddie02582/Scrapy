@@ -33,7 +33,7 @@ IMAGES_STORE = 'images'
 
 ### User Define
 spider.py 使用方法
-新增 custom_settings = {'ITEM_PIPELINES': {'example.pipelines.CSV': 800,}}
+新增 custom_settings = {'ITEM_PIPELINES': {'example.pipelines.PttImageDownLoad': 800,}}
 
 ```
 def get_filename(path):
