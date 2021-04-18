@@ -1,4 +1,4 @@
-# [Scrapy 教學]xpath定位元素方法
+# [Scrapy 教學]Css定位元素方法
 
 在[Scrapy 教學]建立scrapy 專案,我們建立了專案,這篇介紹如何透過Css 定位來解析網頁<br>
 
