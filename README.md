@@ -8,7 +8,6 @@
     <li><a href = "https://github.com/Eddie02582/Scrapy/tree/master/%5BScrapy%20%E6%95%99%E5%AD%B82%5DCSS%E5%AE%9A%E4%BD%8D%E5%85%83%E7%B4%A0%E6%96%B9%E6%B3%95">[Scrapy 教學2]CSS定位元素方法</a></li>	
     <li><a href = "https://github.com/Eddie02582/Scrapy/tree/master/%5BScrapy%20%E6%95%99%E5%AD%B83%5DXpath%E5%AE%9A%E4%BD%8D%E5%85%83%E7%B4%A0%E6%96%B9%E6%B3%95">[Scrapy 教學3]Xpath定位元素方法</a></li>	
 
-	<li><a href = "https://github.com/Eddie02582/Scrapy/tree/master/Extracting%20data">Extracting data</a></li>
     <li><a href = "https://github.com/Eddie02582/Scrapy/tree/master/Following%20links">Following links</a></li>    
     <li><a href = "https://github.com/Eddie02582/Scrapy/tree/master/Items">Items</a></li>    
     <li><a href = "https://github.com/Eddie02582/Scrapy/tree/master/Pipelines">Pipelines</a></li>
