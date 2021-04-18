@@ -4,7 +4,7 @@
  ## Start Learning
  
  <ul>
-    <li><a href = "https://github.com/Eddie02582/Scrapy/tree/master/Simple%20Scrapy">建立簡單的爬蟲</a></li>
+    <li><a href = "https://github.com/Eddie02582/Scrapy/tree/master/Simple%20Scrapy">[Scrapy 教學]建立scrapy 專案</a></li>
     <li><a href = "https://github.com/Eddie02582/Scrapy/tree/master/Extracting%20data">Extracting data</a></li>
     <li><a href = "https://github.com/Eddie02582/Scrapy/tree/master/Following%20links">Following links</a></li>    
     <li><a href = "https://github.com/Eddie02582/Scrapy/tree/master/Items">Items</a></li>    
