@@ -31,7 +31,7 @@
 ```
  
  
-## get tag elements 
+## Get tag elements 
 
 取得div class="quote" 底下span class = "text"這個元素為例,css寫法為div.quote span.text<br>
 
@@ -62,11 +62,12 @@ response.css('div.quote span.text')
 '<span class="text" itemprop="text">“Try not to become a man of success. Rather become a man of value.”</span>', 
 '<span class="text" itemprop="text">“It is better to be hated for what you are than to be loved for what you are not.”</span>',
  '<span class="text" itemprop="text">“I have not failed. I\'ve just found 10,000 ways that won\'t work.”</span>',
- '<span class="text" itemprop="text">“A woman is like a tea bag; you never know how strong it is until it\'s in hot water.”</span>', '<span class="text" itemprop="text">“A day without sunshine is like, you know, night.”</span>'
+ '<span class="text" itemprop="text">“A woman is like a tea bag; you never know how strong it is until it\'s in hot water.”</span>', 
+ '<span class="text" itemprop="text">“A day without sunshine is like, you know, night.”</span>'
  ]
 ```
 
-## how to get element value
+## How to get element value
 
 ### get text
 使用::text來取得

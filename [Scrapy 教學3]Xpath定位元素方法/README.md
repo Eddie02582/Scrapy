@@ -26,16 +26,16 @@
         <a class="tag" href="/tag/thinking/page/1/">thinking</a>
         <a class="tag" href="/tag/world/page/1/">world</a>
     </div>
-</div>```
+</div>
+```
  
  
-## get tag elements 
-取得div class="quote" 底下span class = "text"這個元素為例,xpath 
-
-寫法為//div[contains(@class, "quote")]/span[contains(@class, "text")]<br>
-
+## Get tag elements 
+取得div class="quote" 底下span class = "text"這個元素為例,xpath寫法如下
+```
+//div[contains(@class, "quote")]/span[contains(@class, "text")]
+```
 這邊可以發現前面使用//而後面使用/,差別在於//不管前面的那層,/指的是絕對位置
-
 
 
 
@@ -45,7 +45,7 @@ response.xpath('//div[contains(@class, "quote")]/span[contains(@class, "text")]'
 ```
 
 
-## how to get element value
+## How to get element value
 
 ### get text
 使用/text()來取得
