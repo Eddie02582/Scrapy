@@ -11,6 +11,7 @@
 ```
 從文章按右鍵,選擇檢查,可以看到網頁原始碼<br>　
 觀察網頁原始碼觀察,每個block 都被div class="quote"包住
+
 ```html
 <div class="quote">
     <span class="text">“The world as we have created it is a process of our
@@ -26,10 +27,12 @@
         <a class="tag" href="/tag/thinking/page/1/">thinking</a>
         <a class="tag" href="/tag/world/page/1/">world</a>
     </div>
-</div>```
+</div>
+```
  
  
 ## get tag elements 
+
 取得div class="quote" 底下span class = "text"這個元素為例,css寫法為div.quote span.text<br>
 
 
