@@ -1,6 +1,6 @@
 # [Scrapy 教學4]爬蟲撰寫
 
-在前面教學如何使用CSS或是Xpath來取得資料,接下來是實現他,首先先取得每個div.quote的selector接著使用迴圈去取值
+在前面教學如何使用CSS或是Xpath來取得資料,接下來是實現,首先取得每個div.quote的selector接著使用迴圈去取值
 
 ## simple scrapy
 ```python
@@ -38,7 +38,7 @@ class QuotesSpider(scrapy.Spider):
 ```
 
 
-在最下方抓取下一頁的資訊,如果有就使用yield scrapy.Request(absolute_url, callback = self.parse)繼續請求
+在最下方添加抓取下一頁的連結,如果有就使用yield scrapy.Request(absolute_url, callback = self.parse)繼續請求
 由於scrapy.Request需要絕對路徑,透過urljoin轉換成絕對路徑
 
 ```python
@@ -66,7 +66,7 @@ class QuotesSpider(scrapy.Spider):
             yield scrapy.Request(next_page, callback = self.parse)
 ```
 
-可以支援傳入selector,就必須使用response.follow
+也可以使用response.follow,好處是可以直接傳入select
 
 ```python 
     def parse(self, response):  
@@ -85,7 +85,7 @@ class QuotesSpider(scrapy.Spider):
 
 
 
-對於<a>元素，有一個快捷方式：response.follow自動使用其href屬性。
+對於tag 為a元素，response.follow會自動使用其href屬性,因此可以在改寫成如下
 
 ```python 
 for a in response.css('li.next a'):
@@ -101,5 +101,11 @@ yield from response.follow_all(anchors, callback=self.parse)
 
 或者
 ```python 
-yield from response.follow_all(css='ul.pager a', callback=self.parse)
+yield from response.follow_all(css ='ul.pager a', callback = self.parse)
 ```
+
+
+
+
+
+
