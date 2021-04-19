@@ -2,7 +2,7 @@
 
 想要抓作者的相關資料,必須在每一頁裡面在連結到作者的資訊頁<br>
 
-```
+```python
 class AuthorSpider(scrapy.Spider):
     name = 'author'
 
