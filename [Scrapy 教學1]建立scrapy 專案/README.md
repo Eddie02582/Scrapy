@@ -68,6 +68,7 @@ spiders資料夾就會產生quotes.py
 	<li>parse:用來解析網頁資料</li>
 	<li>name:cmd 執行爬蟲的名字</li>
 </ul>
+
 ```python 
 import scrapy
 class QuotesSpider(scrapy.Spider):
