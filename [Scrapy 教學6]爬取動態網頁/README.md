@@ -21,9 +21,9 @@
    docker run -p 8050:8050 scrapinghub/splash
 ```
 
-##修改scrapy setting.py設定
+## 修改scrapy setting.py設定
 
-配置Splash服務的地址
+Splash服務的地址
 ```
 SPLASH_URL = 'http://127.0.0.1:8050'
 ```
@@ -58,8 +58,19 @@ HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
 
 
 ## code
-只要用SplashRequest取代scrapy.Request
+參考<a href = "https://github.com/Eddie02582/Scrapy/tree/master/%5BScrapy%20%E6%95%99%E5%AD%B84%5D%E7%88%AC%E8%9F%B2%E6%92%B0%E5%AF%AB">[Scrapy 教學4]爬蟲撰寫</a>
+首先使用start_requests取代start_urls
+
+```python
+    def start_requests(self):  
+        url = "http://quotes.toscrape.com/js/"
+        yield scrapy.Request(url) 
 ```
+
+將scrapy.Request 取代成SplashRequest
+
+
+```python
 import scrapy
 from scrapy_splash import SplashRequest
 class QuotesJsSpider(scrapy.Spider):
@@ -70,8 +81,7 @@ class QuotesJsSpider(scrapy.Spider):
         yield SplashRequest(url, self.parse, args={'wait': 0.5})
                 
     
-    def parse(self, response):        
-        print (response.text)
+    def parse(self, response):   
         for quote in response.css('div.quote'):
             yield {
                 'text': quote.css('span.text::text').get(),
