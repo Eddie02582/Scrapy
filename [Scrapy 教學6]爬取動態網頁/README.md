@@ -1,10 +1,13 @@
 # 爬取動態網頁
-使用Spalsh,Spalsh提供JavaScript渲染服務，它是一個使用Twisted和QT5在Python中實現的支持HTTP API調用的輕量級的web瀏覽器。
 
+使用這個網站為例https://quotes.toscrape.com/js/,檢查網頁原始碼可以發現,資料沒有在網頁上,是由於它是使用動態方式產生<br>
+
+
+使用Spalsh,Spalsh提供JavaScript渲染服務，它是一個使用Twisted和QT5在Python中實現的支持HTTP API調用的輕量級的web瀏覽器。
 
 可以參考<a href = "https://splash-cn-doc.readthedocs.io/zh_CN/latest/scrapy-splash-toturial.html">官方文檔</a>
 
-## install
+## install package
 ```
    pip install scrapy-splash
 ```
