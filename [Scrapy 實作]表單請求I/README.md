@@ -10,7 +10,7 @@ https://www.vscinemas.com.tw/ShowTimes/
 
 重新回到https://www.vscinemas.com.tw/ShowTimes/
 
-開啟F12,Network部分,再次選擇信義威秀,可以發現Network底下多了一些項目,檢查GetshowTimes,可以發現是對https://www.vscinemas.com.tw/ShowTimes//ShowTimes/GetShowTimes請求
+開啟F12,Network部分,再次選擇信義威秀,可以發現Network底下多了一些項目,檢查GetshowTimes,可以發現是對https://www.vscinemas.com.tw/ShowTimes//ShowTimes/GetShowTimes 請求
 
 
 <img src = "4.PNG"></img>
