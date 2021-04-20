@@ -41,29 +41,7 @@ class ViewshowSpider(scrapy.Spider):
 
 
 
-scrapy shell https://www.vscinemas.com.tw/ShowTimes//ShowTimes/GetShowTimes
-url = "https://www.vscinemas.com.tw/ShowTimes//ShowTimes/GetShowTimes"
-response = scrapy.FormRequest(url,formdata={'CinemaCode':'TP'})
-fetch(response)
-
-response.xpath('//strong[contains(@class, "LangTW MovieName")]/text()').get()
-
-response.xpath('//strong[contains(@class, "LangTW MovieName")]')
-
-strong[contains(@class, "LangTW MovieName")]
-
-response.css('div#ShowTimeSecondInfo')
-response.css('[id="ShowTimeSecondInfo"]')
-
-response.xpath('//div[contains(@id, "ShowTimeSecondInfo")]')
 
 
-
-
-        html_file = open('viewshow.html', 'w')
-        html_file.write(response.body.decode("utf-8"))
-        html_file.close()
-
-
-
-
+結果如下
+<img src = "7.PNG"></img>
