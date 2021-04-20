@@ -55,7 +55,7 @@ fetch(response)
 <img src = "2.PNG"></img>
 
 一樣在shell 底下
-```
+```python
 url = 'https://www.ptt.cc/bbs/Beauty/M.1587404155.A.04D.html'
 cookies = {"over18": "1"}
 response = scrapy.Request(url, cookies=cookies)
@@ -104,7 +104,7 @@ get image url
 直接抓取jpg的話不用就轉換,後來發現並非所有都含有jpg,使用response.css("div.richcontent blockquote a::attr(href)").extract()比較保險
 所以在pipelines.py 新增轉換網址
 
-```
+```python
 def imgur_link_to_url(link):    
     import re
     match = re.match('^//imgur.com/([a-zA-Z0-9]+)',link)
