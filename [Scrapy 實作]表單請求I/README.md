@@ -21,10 +21,48 @@ https://www.vscinemas.com.tw/ShowTimes/
 
 
 
+```python 
+import scrapy
+class ViewshowSpider(scrapy.Spider):
+    name = 'viewshow'
+    allowed_domains = ['www.vscinemas.com.tw/']
+  
+
+    def start_requests(self):    
+        url = 'https://www.vscinemas.com.tw/ShowTimes//ShowTimes/GetShowTimes'  
+        yield scrapy.FormRequest(url,self.parse,formdata={'CinemaCode':'TP'})
+        
+    
+    def parse(self, response):
+        print (response.body)
+```
+可以發現資料有出來了,剩下就是一般爬蟲的處理
+<img src = "6.PNG"></img>
+
+
+
+scrapy shell https://www.vscinemas.com.tw/ShowTimes//ShowTimes/GetShowTimes
+url = "https://www.vscinemas.com.tw/ShowTimes//ShowTimes/GetShowTimes"
+response = scrapy.FormRequest(url,formdata={'CinemaCode':'TP'})
+fetch(response)
+
+response.xpath('//strong[contains(@class, "LangTW MovieName")]/text()').get()
+
+response.xpath('//strong[contains(@class, "LangTW MovieName")]')
+
+strong[contains(@class, "LangTW MovieName")]
+
+response.css('div#ShowTimeSecondInfo')
+response.css('[id="ShowTimeSecondInfo"]')
+
+response.xpath('//div[contains(@id, "ShowTimeSecondInfo")]')
 
 
 
 
+        html_file = open('viewshow.html', 'w')
+        html_file.write(response.body.decode("utf-8"))
+        html_file.close()
 
 
 
