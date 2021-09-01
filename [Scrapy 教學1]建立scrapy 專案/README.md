@@ -2,7 +2,7 @@
 
 ## 安裝
 ```
-pip install scrapy </br>
+pip install scrapy 
 ```
 如果出現以下錯誤,請下執行python -m pip install --upgrade pip,更新pip version
 ```
@@ -22,7 +22,7 @@ You should consider upgrading via the 'python -m pip install --upgrade pip' comm
    scrapy startproject [name]
 ```
  
-這邊下scrapy startproject example,會吐出下列訊息
+下scrapy startproject example,會吐出下列訊息
 
 ```
 You can start your first spider with:
@@ -30,7 +30,7 @@ You can start your first spider with:
     scrapy genspider example example.com
 ```
 
-並且產生下列
+並且會產生如下
 ```
 example/
     scrapy.cfg            # deploy configuration file

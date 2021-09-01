@@ -5,11 +5,16 @@
 這篇以官網範例的<a href ="https://quotes.toscrape.com/page/1/">網址</a>為例<br>
 
  
-使用scrapy shell 來學習或測試,指令為
+使用scrapy shell [url]來學習或測試,指令為
 ```
-   scrapy shell url
+   scrapy shell https://quotes.toscrape.com/page/1/
 ```
+
 從文章按右鍵,選擇檢查,可以看到網頁原始碼<br>　
+<img src="1.PNG">
+
+
+
 觀察網頁原始碼觀察,每個block 都被div class="quote"包住
 
 ```html
@@ -32,8 +37,8 @@
  
  
 ## Get tag elements 
-
-取得div class="quote" 底下span class = "text"這個元素為例,css寫法為div.quote span.text<br>
+取得元素的方式為 tag.class_name<br>
+假設要取得div class="quote" 底下span class = "text"這個元素為例,css寫法為div.quote span.text<br>
 
 
 ```python
