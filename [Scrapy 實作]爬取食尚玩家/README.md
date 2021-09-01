@@ -2,7 +2,7 @@
 
 <a href = "https://supertaste.tvbs.com.tw/review">食尚玩家</a>網址,想要爬取每個連結裡面的內容,這個是雙向爬蟲
 
-可以先參考[Scrapy 教學5]雙向爬蟲
+可以先參考<a href ="https://github.com/Eddie02582/Scrapy/tree/master/%5BScrapy%20%E6%95%99%E5%AD%B85%5D%E9%9B%99%E5%90%91%E7%88%AC%E8%9F%B2">[Scrapy 教學5]雙向爬蟲</a>
 
 
 ## 取得內部連結和資料
@@ -67,7 +67,7 @@ class SupertasteSpider(scrapy.Spider):
 ```
 
 ## 取得下一頁的資料
-可以發現,當網頁滾動到底部時,網頁會自動產生資料,推測可能是使用ajax取得資料,所以需要改寫前面取得網頁的方式,參考<a href = "">[Scrapy 教學6]爬取動態網頁 I (Ajax)</a>
+可以發現,當網頁滾動到底部時,網頁會自動產生資料,推測可能是使用ajax取得資料,所以需要改寫前面取得網頁的方式,參考<a href = "https://github.com/Eddie02582/Scrapy/tree/master/%5BScrapy%20%E6%95%99%E5%AD%B86%5D%E7%88%AC%E5%8F%96%E5%8B%95%E6%85%8B%E7%B6%B2%E9%A0%81%20I(Ajax)">[Scrapy 教學6]爬取動態網頁 I (Ajax)</a>
 這邊強烈建議先找網頁下一頁的方法,以免白做工
 
 ```python
